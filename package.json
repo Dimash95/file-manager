@@ -1,0 +1,13 @@
+{
+  "name": "file-manager",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "engines": {
+    "node": ">= 20.11.0"
+  },
+  "dependencies": {
+    "create-node-cli": "^1.6.1"
+  }
+}
