@@ -1,14 +1,23 @@
-const readline = require("readline");
-const { getUsername } = require("./userName");
-const { listFile } = require("./list");
-const { copyFile } = require("./copy");
-const { deleteFile } = require("./delete");
-const { up } = require("./up");
-const { cd } = require("./cd");
-const { cat } = require("./cat");
-const { addFile } = require("./add");
-const { renameFile } = require("./rename");
-const { moveFile } = require("./move");
+import readline from "readline";
+
+import { getUsername } from "./userName.mjs";
+
+import { up } from "./navigation-&-working/up.mjs";
+import { cd } from "./navigation-&-working/cd.mjs";
+import { listFile } from "./navigation-&-working/list.mjs";
+
+import { addFile } from "./basic-operations/add.mjs";
+import { renameFile } from "./basic-operations/rename.mjs";
+import { copyFile } from "./basic-operations/copy.mjs";
+import { moveFile } from "./basic-operations/move.mjs";
+import { cat } from "./basic-operations/cat.mjs";
+import { deleteFile } from "./basic-operations/delete.mjs";
+
+import { printEOL } from "./os/eol.mjs";
+import { printCPUInfo } from "./os/cpus.mjs";
+import { printHomeDirectory } from "./os/homedir.mjs";
+import { printSystemUsername } from "./os/username.mjs";
+import { printCPUArchitecture } from "./os/architecture.mjs";
 
 const username = getUsername();
 console.log(`Welcome to the File Manager, ${username}!`);
@@ -21,7 +30,8 @@ const rl = readline.createInterface({
 
 rl.prompt();
 
-rl.on("line", (line) => {
+rl.on("line", async (line) => {
+  const [input] = line.trim().split(" ");
   const [command, ...args] = line.trim().split(" ");
 
   switch (command) {
@@ -72,6 +82,9 @@ rl.on("line", (line) => {
         console.log("Please specify the source path and the destination path.");
       }
       break;
+    case "os":
+      handleOsCommand(args); // Pass the arguments to a separate function for handling os commands
+      break;
     case ".exit":
       rl.close();
       break;
@@ -85,4 +98,27 @@ rl.on("line", (line) => {
   process.exit(0);
 });
 
-// List files in the current directory
+function handleOsCommand(args) {
+  const [osCommand, ...osArgs] = args; // Split the os command and its arguments
+
+  switch (osCommand) {
+    case "--EOL":
+      printEOL();
+      break;
+    case "--cpus":
+      printCPUInfo();
+      break;
+    case "--homedir":
+      printHomeDirectory();
+      break;
+    case "--username":
+      printSystemUsername();
+      break;
+    case "--architecture":
+      printCPUArchitecture();
+      break;
+    default:
+      console.log("Invalid os command");
+      break;
+  }
+}

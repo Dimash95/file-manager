@@ -1,7 +1,7 @@
-const path = require("path");
-const os = require("os");
+import path from "path";
+import os from "os";
 
-function up() {
+export function up() {
   const currentDir = process.cwd();
   const parentDir = path.resolve(currentDir, "..");
 
@@ -18,10 +18,3 @@ function up() {
   // Display the current working directory after the operation
   console.log(`Current directory: ${process.cwd()}`);
 }
-
-// Example usage:
-// User types 'up' command
-module.exports = {
-  up,
-  // ... другие функции, если они есть ...
-};
