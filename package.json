@@ -7,8 +7,5 @@
   "engines": {
     "node": ">= 20.11.0"
   },
-  "dependencies": {
-    "create-node-cli": "^1.6.1"
-  },
   "type": "module"
 }

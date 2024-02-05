@@ -2,9 +2,9 @@ import readline from "readline";
 
 import { getUsername } from "./userName.mjs";
 
-import { up } from "./navigation-&-working/up.mjs";
-import { cd } from "./navigation-&-working/cd.mjs";
-import { listFile } from "./navigation-&-working/list.mjs";
+import { up } from "./navigation_and_working/up.mjs";
+import { cd } from "./navigation_and_working/cd.mjs";
+import { listFile } from "./navigation_and_working/list.mjs";
 
 import { addFile } from "./basic-operations/add.mjs";
 import { renameFile } from "./basic-operations/rename.mjs";
@@ -18,6 +18,11 @@ import { printCPUInfo } from "./os/cpus.mjs";
 import { printHomeDirectory } from "./os/homedir.mjs";
 import { printSystemUsername } from "./os/username.mjs";
 import { printCPUArchitecture } from "./os/architecture.mjs";
+
+import { hashFile } from "./hash/hash.mjs";
+
+import { compressFile } from "./compress_and_decompress/compress.mjs";
+import { decompressFile } from "./compress_and_decompress/decompress.mjs";
 
 const username = getUsername();
 console.log(`Welcome to the File Manager, ${username}!`);
@@ -84,6 +89,42 @@ rl.on("line", async (line) => {
       break;
     case "os":
       handleOsCommand(args); // Pass the arguments to a separate function for handling os commands
+      break;
+    case "hash":
+      if (args.length > 0) {
+        try {
+          const fileHash = await hashFile(args[0]);
+          console.log(`Hash of ${args[0]}: ${fileHash}`);
+        } catch (error) {
+          console.error(`Error hashing file: ${error.message}`);
+        }
+      } else {
+        console.log("Please specify a file path for hashing.");
+      }
+      break;
+    case "compress":
+      if (args.length >= 2) {
+        try {
+          await compressFile(args[0], args[1]);
+          console.log("Compression completed.");
+        } catch (error) {
+          console.error(`Error during compression: ${error.message}`);
+        }
+      } else {
+        console.log("Please specify a source path and a destination path.");
+      }
+      break;
+    case "decompress":
+      if (args.length >= 2) {
+        try {
+          await decompressFile(args[0], args[1]);
+          console.log("Decompression completed.");
+        } catch (error) {
+          console.error(`Error during decompression: ${error.message}`);
+        }
+      } else {
+        console.log("Please specify a source path and a destination path.");
+      }
       break;
     case ".exit":
       rl.close();
